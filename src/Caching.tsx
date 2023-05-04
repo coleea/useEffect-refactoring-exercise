@@ -9,6 +9,11 @@ function Caching() {
   const todos = ["today : a", "yesterday : b", "c"]; 
   const filter = (a : string) => a.toLowerCase().includes(filterName) ;
 
+  useEffect(() => {
+    
+    return () => {console.log("cleanup Function is called")}
+  }, [filterName]);
+  
   return (
     <>
       <div className="">parent component</div>
