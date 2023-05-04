@@ -5,19 +5,25 @@
 - useEffect를 많이 쓴다 -> react를 잘못 쓰고 있는 것일 수 있음
 - useEffect를 최소한으로 쓴다 -> 고수
 
-# 참고
 
-- You Might Not Need an Effect
-    - react official docs about how to not use useEffect
-    - https://react.dev/learn/you-might-not-need-an-effect
+# 참고 1. You Might Not Need an Effect
 
-## 팁
+- react official docs about how to not use useEffect
+- https://react.dev/learn/you-might-not-need-an-effect
+
+## Tips from `"You Might Not Need an Effect"`
 - state로 파생되는 값은 state로 생성하지 말고 지역 변수로 생성할것
 - props의 변화는 "절대" useEffect로 감지하지 말것
     - props가 변하면 함수가 재호출되므로 props의 변화에 반응하는  코드를 함수 내부에 작성하는 것만으로 충분. useEffect는 불필요 
     - 연산이 헤비하면 useMemo로 래핑할것
     - props가 변화할 때 상태를 초기화하고 싶을 때
         - 함수 컴포넌트의 key attribute를 사용할 것 
+- 이벤트 핸들러에서 끝낼 수 있는 작업은 이벤트 핸들러에서 끝낼 것
+    - useEffect로 끌고와서 처리하지 말 것
+    - fetch를 useEffect로 끌고와서 호출하지 말 것
+    - fetch를 useEffect에서 호출해도 되는 유일한 순간은 컴포넌트가 mount될 때 뿐
+    - 사실 fetch를 useEffect에서 호출하는 것은 좋지않은 관계로 간주됨
+        - react-query, swr등의 대체제를 찾을 것
 - 이벤트 핸들러에서 fetch할 때
     - setState로 상태변경 후 useEffect에서 fetch하지 말고 이벤트 핸들러 내에서 곧바로 fetch 호출할것
 - 이벤트 핸들러에서 2개 이상의 state를 변경하는 상황
@@ -38,9 +44,15 @@
 
 - addEventlistener등록은 useEffect에서 수행하지 말고 useExternalSyncStore에서 수행할것
 
-- Goodbye, useEffect   
-    - David Khourshid의 강연 (x-state 저자)
-    - useEffect 안쓰는 팁을 알려줌
-    - https://www.youtube.com/watch?v=bGzanfKVFeU
-    - 의존성 배열은 이펙트를 다루는데 적절한 멘탈 모델이 아님
-    - react 18 runs effect twice on mount in strict mode
+# 참고 2. Goodbye, useEffect
+
+- David Khourshid의 강연 (x-state 저자)
+- useEffect 안쓰는 팁을 알려줌
+- https://www.youtube.com/watch?v=bGzanfKVFeU
+- 의존성 배열은 이펙트를 다루는데 적절한 멘탈 모델이 아님
+- react 18 runs effect twice on mount in strict mode
+
+## tips from `"Goodbye, useEffect"`
+
+- fetch시에 race condition문제를 해결하는 방법
+    - useEffect안에서 fetch를 수행하지 말고 react-quert나 swr을 사용하거나 `use()`훅을 사용할 것
